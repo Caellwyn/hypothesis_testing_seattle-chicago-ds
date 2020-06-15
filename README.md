@@ -86,17 +86,17 @@ If we're testing whether Peeps cause dementia, then the null hypothesis will say
 
 ## Two Tail Hypothesis
 
-$\Large H_0: \bar{x} - \mu_p = 0  $  
-$\Large H_1: \bar{x} - \mu_p \neq 0  $
+$\Large H_0: \mu_1 - \mu_2 = 0  $  
+$\Large H_1: \mu_1 - \mu_2 \neq 0  $
     
 ## Left Tail Hypothesis
 
-$\Large H_0: \bar{x} >= \mu_p  $  
-$\Large H_1: \bar{x} < \mu_p  $
+$\Large H_0: \mu_1 >= \mu_2   $  
+$\Large H_1: \mu_1 < \mu_2  $
     
 ## Right Tail Hypothesis
-$\Large H_0: \bar{x} <= \mu_p  $  
-$\Large H_1: \bar{x} > \mu_p  $
+$\Large H_0: \mu_1  <= \mu_2   $  
+$\Large H_1: \mu_1  > \mu_2  $
 
 # Write the hypotheses
 
