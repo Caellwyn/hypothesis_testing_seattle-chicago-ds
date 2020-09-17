@@ -9,58 +9,95 @@
 4. Define and perform Z-tests
 5. Define and perform T-tests: 1 sample and 2 sample
 
-## Scenarios
+# Let's begin with code, work through a computational version of hypothesis testing
 
-- Chemistry - do inputs from two different barley fields produce different
-yields?
-- Astrophysics - do star systems with near-orbiting gas giants have hotter
-stars?
-- Medicine - BMI vs. Hypertension, etc.
-- Business - which ad is more effective given engagement?
+Let's work with the normal distribution, since it's so useful. Suppose we are told that African elephants have weights distributed normally around a mean of 9000 lbs., with a standard deviation of 900 lbs. Pachyderm Adventures has recently measured the weights of 40 African elephants in Gabon and has calculated their average weight at 8637 lbs. They claim that these statistics on the Gabonese elephants are significant. Let's find out!
 
-![img1](./img/img1.png)
 
-![img2](./img/img2.png)
+```python
+random_sample = np.random.normal(9000, 900, 40)
+```
+
+## Refresher on CLT
+
+<img src="./img/sampling-dist.jpg" width="500" class="center">
+Remember the CLT states that as a sample size $n$ increases, the sampling distribution of of the mean from a random sample size of $n$ more closely approximates a normal distribution.  
+
+<img src="./img/Normal-Distribution.png" width="500" class="center">
+
+
+
+```python
+sample_means = []
+
+for _ in range(1000):
+    s_mean = np.random.normal(9000, 900, 40).mean()
+    sample_means.append(s_mean)
+    
+```
+
+
+```python
+less_than_sample_count = 0
+for mean in sample_means:
+    if mean <= 8637:
+        less_than_sample_count += 1
+
+print(less_than_sample_count)
+```
+
+
+```python
+7/1000
+```
+
+Now let's calculate the z-score analytically.
+Remember the formula for z-score:  
+
+
+$z = \large\dfrac{{\bar{x}} - \mu_{0}}{\dfrac{\sigma}{\sqrt{n}}}$
+
+
+```python
+z_score = (8636 - 9000)/(900/np.sqrt(40))
+z_score
+```
+
+# Now let's add the vocabulary and framework to create fullfledged hypothesis tests
+
+## Scenario
+
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give forty of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 12 dollars a visit, with a standard deviation of 3.5 dollars. They find that the 40 customers they gave a coupon spend on average 17 dollars with a standard deviation of 4. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
+
 
 # 1: Establish the basic framework and assumptions for hypothesis testing
 
 ### High Level Hypothesis Testing
 1. Start with a Scientific Question (yes/no)
+
 2. Take the skeptical stance (Null hypothesis) 
+
 3. State the complement (Alternative)
+
 4. Create a model of the situation Assuming the Null Hypothesis is True!
+
 5. Decide how surprised you would need to be in order to change your mind
 
-**Intuition** 
-
-Suppose you have a large dataset for a population. The data is normally distributed with mean 0 and standard deviation 1.
-
-Along comes a new sample with a sample mean of 2.9.
-
-> The idea behind hypothesis testing is a desire to quantify our belief as to whether our sample of observations came from the same population as the original dataset. 
-
-According to the empirical (68–95–99.7) rule for normal distributions there is only roughly a 0.003 chance that the sample came from the same population, because it is roughly 3 standard deviations above the mean. 
-
-<img src="img/normal_sd_new.png" width="500">
- 
-To formalize this intuition, we define an threshold value for deciding whether we believe that the sample is from the same underlying population or not. This threshold is $\alpha$, the **significance threshold**.  
-
-This serves as the foundation for hypothesis testing where we will reject or fail to reject the null hypothesis.
-
-
-# Hypothesis Testing Steps
+### Hypothesis Testing Steps
 
 1. Set up null and alternative hypotheses
 
-2. Choose a significance level (alpha)
+2. Specify the appropriate statistical test
 
-3. Determine the critical or p-value (find the rejection region)
+3. Choose a significance level (alpha)
 
-4. Calculate the test statistic
+4. Determine the critical value of test statistic
 
-5. Compare test-statistic with critical value to accept or reject the Null hypothesis.
+5. Calculate the observed value of the test statistic and the p-value.
 
-### 2: Define Null and Alternative Hypotheses
+6. Make a decision (reject or fail to reject) regarding the Null Hypothesis by comparing the observed value of the test-statistic with critical value.
+
+### 1: Setup Null and Alternative Hypotheses
 
 
 ### The Null Hypothesis
@@ -78,70 +115,81 @@ If we're testing whether Peeps cause dementia, then the null hypothesis will say
 
 ![peeps](https://media.giphy.com/media/j3kh0AAZfeNP2/giphy.gif)
 
-# One tailed vs two tailed tests
+![](./img/summary_one_two.jpg)
 
-![](img/one_tailed.png)
+## Practice: Write the hypotheses
 
-![](img/two_tailed.png)
+<img src="img/talking.jpeg" width="60" align='left'>
 
-## Two Tail Hypothesis
+</br>
 
-$\Large H_0: \mu_1 - \mu_2 = 0  $  
-$\Large H_1: \mu_1 - \mu_2 \neq 0  $
-    
-## Left Tail Hypothesis
+With a classmate Slack out the null and alternative hypotheses for The Donut Fairy example in your own words.
 
-$\Large H_0: \mu_1 >= \mu_2   $  
-$\Large H_1: \mu_1 < \mu_2  $
-    
-## Right Tail Hypothesis
-$\Large H_0: \mu_1  <= \mu_2   $  
-$\Large H_1: \mu_1  > \mu_2  $
+### How do we know whether we need to use a z-test or a t-test? 
 
-# Write the hypotheses
+<img src="img/z_or_t_test.png" width="500">
 
-1. A drug manufacturer claims that a drug increases memory. It designs an experiment where both control and experimental groups are shown a series of images, and records the number of correct recollections until an error is made for each group. 
-
-Answer  
-$
-
-2. An online toystore claims that putting a 5 minute timer on the checkout page of it website decreases conversion rate. It sets up two versions of its site, one with a timer and one with no timer. 
-
-Answer  
-$
-
-3. The Kansas City public school system wants to test whether the scores of students who take standardized tests under the supervision of teachers differ from the scores of students who take them in rooms with school administrators.
-
-Answer  
-$
-
-4. A pest control company believes that the length of cockroach legs in colonies which have persisted after two or more insecticide treatements are longer than those in which have not been treated to insecticide.
-
-Answer  
-$
-
-5. A healthcare company believes patients between the ages of 18 and 25 participate in annual checkups less than all other age groups.
-
-Answer  
-$
-
-# 3. Define p-value, alpha, type I/II errors
-
-## $p$-Values
-
-The basic idea of a p-value is to quantify the probability that the results seen are in fact the result of mere random chance. This is connected with the null hypothesis since, if the null hypothesis is true and there is no significant correlation between the population variables X and Y, then of course any correlation between X and Y observed in our sample would have to be the result of mere random chance.
+## Step 3: Choosing a significance level
 
 ### How Unlikely Is Too Unlikely?
 
-## $Alpha: \alpha$
+### $Alpha: \alpha$
 
-Suppose we calculate a p-value for some statistic we've measured (more on this below!) and we get a p-value of 20%. This would mean that there is a 20% chance that the results we observed were the result of mere random chance. Probably this is high enough that we ought _not_ to reject the null hypothesis that our variables are uncorrelated.
+In order to test our hypothesis we will need a way to decide if we should reject the null hypothesis.  The way we do this is by setting the $\alpha$ value, otherwise known as the significance level before we conduct our analysis.  The $\alpha$ value is the probability of rejecting the null hypothesis when it is true.  For example an $\alpha$ value of 0.05 indicates that there is a 5% risk of rejecting the null hypothesis when it fact it is true.  
 
-In practice, a p-value _threshold_ ($\Large \alpha$) of 5% is very often the default value for these tests of statistical significance. Thus, if it is calculated that the chance that the results we observed were actually the result of randomness is less than 1 in 20, then we would _reject_ the null hypothesis and _accept_ the alternative hypothesis.
+Note:  We can chance our alpha value based on how important it is to be accurate in our decision making. It is common to have alpha values of .10, .05, or .01 but you can set any value.
 
-If $p \lt \alpha$, we reject the null hypothesis.:
+<img src="./img/alpha_regions.jpg" width=800  class="center">
 
-If $p \geq \alpha$, we fail to reject the null hypothesis.
+### Since it is a common alpha level and we don't have a particularly risky decision to make we will use an alpha level of 0.05.
+
+## Step 4: Determine the critical value of test statistic
+
+For our donut example, we have to find the zscore associated with an $\alpha$ of .05
+
+
+```python
+from scipy import stats
+z_critical = stats.norm.ppf(.95)
+z_critical
+```
+
+# Step 5: Calculating the observed value and our p-value
+
+The basic idea of a p-value is the probability the you would obtain this value in your sample, or larger, if the null hypothesis is true of the population. So in our case z-score greater than ~1.645.
+
+<img src="./img/one_tailed.png" width=800  class="center">
+
+
+# Let's calculate our observed zscore
+
+
+$z = \large\dfrac{{\bar{x}} - \mu_{0}}{\dfrac{\sigma}{\sqrt{n}}}$
+
+
+
+```python
+z = (17-13.5)/(3.5/np.sqrt(40))
+z
+```
+
+
+```python
+1 - stats.norm.cdf(z)
+```
+
+# Step 6: Making A Decision!
+
+
+Once we have our observed test value we can compare it to our alpha value to make a decision regarding our hypothesis.  In step 4 we determined that the critical z-statistic was $\pm$ 1.645 and our critical p-value was 0.05.  Our observed t-statistic was 6.32 and observed p-value of 1.269814253745949e-10 are more extreme than the critical values, falling in the region of rejection.  Thus we are able to reject the null hypothesis that the sales did not differ depending on the type of coupon the customers received.
+
+
+<img src="./img/pval_1.jpg" width=500  class="center"> <img src="./img/pval_2.jpg" width=500  class="center">
+
+
+If $p$ observed $\lt \alpha$, we reject the null hypothesis.:
+
+If $p$ observed $\geq \alpha$, we fail to reject the null hypothesis.
 
 > **We do not accept the alternative hypothesis, we only reject or fail to reject the null hypothesis in favor of the alternative.**
 
@@ -149,83 +197,27 @@ If $p \geq \alpha$, we fail to reject the null hypothesis.
 * We say "this methodology, with this data, does not produce significant results" 
     * Maybe we need more data!
 
-**CAUTION** We have to determine our $\alpha$ level, i.e. the threshold for an acceptible p-value, before we conduct our tests. Otherwise, we will be accused of p-hacking.
 
 ## Type 1 Errors (False Positives) and Type 2 Errors (False Negatives)
 Most tests for the presence of some factor are imperfect. And in fact most tests are imperfect in two ways: They will sometimes fail to predict the presence of that factor when it is after all present, and they will sometimes predict the presence of that factor when in fact it is not. Clearly, the lower these error rates are, the better, but it is not uncommon for these rates to be between 1% and 5%, and sometimes they are even higher than that. (Of course, if they're higher than 50%, then we're better off just flipping a coin to run our test!)
 
 Predicting the presence of some factor (i.e. counter to the null hypothesis) when in fact it is not there (i.e. the null hypothesis is true) is called a "false positive". Failing to predict the presence of some factor (i.e. in accord with the null hypothesis) when in fact it is there (i.e. the null hypothesis is false) is called a "false negative".
 
-
-How does changing our alpha value change the rate of type 1 and type 2 errors?
-
-# Z-Tests 
-
-![z](https://media.giphy.com/media/4oku9cpYuCNwc/giphy.gif)
-
-A z-test is used when you know the population mean and standard deviation.
-
-Our test statistic is the z-stat.
-
-For a single point in relation to a distribution of points:
-
-$z = \dfrac{{x} - \mu}{\sigma}$
+![](./img/decisions.jpg)
 
 
+![](./img/Type1_type2_errors.jpg)
 
-for a single data point $x$ is equal to a data point, $\mu$ equals the mean of the standard distribution, and $\sigma$ is the standard deviation of the standard distribution.
+#### Turn and Talk
+<img src="img/talking.jpeg" width="60" align='left'>
+</br>
+</br>
+</br>
 
-<br>Our z score tells us how many standard deviations away from the mean our point is.
-<br>We assume that the sample population is normally destributed, and we are familiar with the empirical rule: <br>66:95:99.7
+1. In context of our ad scenario what are the type 1 and type 2 errors?
+2. How does changing our alpha value change the rate of type 1 and type 2 errors?
 
-![](img/Empirical_Rule.png)
-
-
-Because of this, we can say, with a z-score of approximately 2, our data point is 2 standard deviations from the mean, and therefore has a probability of appearing of 1-.95, or .05. 
-
-Yesterday, we performed the encountered the following example: Assume the mean height for women in the use is normally distributed with a mean of 65 inches and a standard deviation of 4 inches. What is the z-score of a woman who is 75 inches tall? 
-    
-
-When we are working with a sampling distribution, the z score is equal to <br><br>  $\Large z = \dfrac{{\bar{x}} - \mu_{0}}{\dfrac{\sigma}{\sqrt{n}}}$
-
-## Variable review: 
-
-Where $\bar{x}$ equals the sample mean.
-<br>$\mu_{0}$ is the mean associated with the null hypothesis.
-<br>$\sigma$ is the population standard deviation
-<br>$\sqrt{n}$ is the sample size, which reflects that we are dealing with a sample of the population, not the entire population.
-
-The denominator $\frac{\sigma}{\sqrt{n}}$, is the standard error
-
-Standard error is the standard deviation of the sampling mean. We will go into that further, below.
-
-Once we have a z-stat, we can use a [z-table](http://www.z-table.com/) to find the associated p-value.
-
-# Let's first work through a computational method of hypothesis testing.
-
-
-Let's work with the normal distribution, since it's so useful. Suppose we are told that African elephants have weights distributed normally around a mean of 9000 lbs., with a standard deviation of 900 lbs. Pachyderm Adventures has recently measured the weights of 40 African elephants in Gabon and has calculated their average weight at 8637 lbs. They claim that these statistics on the Gabonese elephants are significant. Let's find out!
-
-What is our null hypothesis?
-
->
-
-What is our alternative hypothesis?
-
-What is our alpha?
-
-Now let's count how many times the means from the sample distribution were less than the mean weight of the Gabonese elephants.
-
-Remember we gave the formula for standard error before as $\frac{\sigma}{\sqrt{n}}$
-<br> Let's calculate that with our elephant numbers.
-
-Now let's calculate the z-score analytically.
-Remember the formula for z-score:
-$z = \dfrac{{\bar{x}} - \mu_{0}}{\dfrac{\sigma}{\sqrt{n}}}$
-
-# T-Tests
-
-# z-tests vs t-tests
+# T-tests
 
 According to the **Central Limit Theorem**, the sampling distribution of a statistic, like the sample mean, will follow a normal distribution _as long as the sample size is sufficiently large_. 
 
@@ -233,82 +225,70 @@ __What if we don't have large sample sizes?__
 
 When we do not know the population standard deviation or we have a small sample size, the sampling distribution of the sample statistic will follow a t-distribution.  
 * Smaller sample sizes have larger variance, and t-distributions account for that by having heavier tails than the normal distribution.
-* t-distributions are parameterized by degrees of freedom, fewer degrees of freedom fatter tails. Also converges to a normal distribution as dof >> 0
+* t-distributions are parameterized by degrees of freedom, fewer degrees of freedom fatter tails. Also converges to a normal distribution as df >> 0
 
-# One-sample z-tests and one-sample t-tests
-
-One-sample z-tests and one-sample t-tests are hypothesis tests for the population mean $\mu$. 
-
-How do we know whether we need to use a z-test or a t-test? 
-
-<img src="img/z_or_t_test.png" width="500">
+<img src="./img/distributions1.png" width=600  class="center">
 
 
-**When we perform a hypothesis test for the population mean, we want to know how likely it is to obtain the test statistic for the sample mean given the null hypothesis that the sample mean and population mean are not different.** 
-
-The test statistic for the sample mean summarizes our sample observations. How do test statistics differ for one-sample z-tests and t-tests? 
-
-A t-test is like a modified z-test. 
-
-* Penalize for small sample size: "degrees of freedom"
-
-* Use sample standard deviation $s$ to estimate the population standard deviation $\sigma$.
-
-<img src="img/img5.png" width="500">
+Let's reimagine the Donut Fairy scenario above.  Now, instead of 40 people, the Donut Fairy owner only gives out $10 coupons to 20 people.
 
 
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give **20** of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 12 dollars a visit, with a standard deviation of 3.5 dollars. They find that the **20** customers they gave a coupon spend on average 17 dollars. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
 
-### T and Z in detail
-![img4](./img/img4.png)
 
-## One-sample z-test
+# Steps 
 
-* For large enough sample sizes $n$ with known population standard deviation $\sigma$, the test statistic of the sample mean $\bar x$ is given by the **z-statistic**, 
-$$Z = \frac{\bar{x} - \mu}{\sigma/\sqrt{n}}$$ where $\mu$ is the population mean.  
+1. Set up null and alternative hypotheses
 
-* Our hypothesis test tries to answer the question of how likely we are to observe a z-statistic as extreme as our sample's given the null hypothesis that the sample and the population have the same mean, given a significance threshold of $\alpha$. This is a one-sample z-test.  
+2. Specify the appropriate statistical test
 
-## One-sample t-test
+3. Choose a significance level (alpha)
+
+4. Determine the critical value of test statistic
+
+5. Calculate the observed value of the test statistic and the p-value.
+
+6. Make a decision (reject or fail to reject) regarding the Null Hypothesis by comparing the observed value of the test-statistic with critical value.
+
+
+```python
+# Null: Customers with a coupon spend the same amount as customers without a coupon
+# Alt: Customers with a coupon spend more than customer without a coupon
+```
+
+
+```python
+# Right tailed one sample t-test
+```
+
+
+```python
+#.05
+```
+
+
+```python
+stats.t.ppf(.95, 19)
+```
+
+
 
 * For small sample sizes or samples with unknown population standard deviation, the test statistic of the sample mean is given by the **t-statistic**, 
 $$ t = \frac{\bar{x} - \mu}{s/\sqrt{n}} $$ Here, $s$ is the sample standard deviation, which is used to estimate the population standard deviation, and $\mu$ is the population mean.  
 
 * Our hypothesis test tries to answer the question of how likely we are to observe a t-statistic as extreme as our sample's given the null hypothesis that the sample and population have the same mean, given a significance threshold of $\alpha$. This is a one-sample t-test.
 
-## Compare and contrast z-tests and t-tests. 
-In both cases, it is assumed that the samples are normally distributed. 
 
-A t-test is like a modified z-test:
-1. Penalize for small sample size; use "degrees of freedom" 
-2. Use the _sample_ standard deviation $s$ to estimate the population standard deviation $\sigma$. 
+```python
+t = (17-13.5)/(4/np.sqrt(20))
+stats.t.cdf(t, 19)
+```
 
-T-distributions have more probability in the tails. As the sample size increases, this decreases and the t distribution more closely resembles the z, or standard normal, distribution. By sample size n = 1000 they are virtually indistinguishable from each other. 
+Most often, you will have access to the values of the sample.  If you have access to those values, we can feed them into the stats ttest_1samp function 
 
-As the degrees of freedom go up, the t-distribution gets closer to the normal curve.
-
-After calculating our t-stat, we compare it against our t-critical value determined by our preditermined alpha and the degrees of freedom.
-
-Degrees of freedom = n - 1
-### T-value table
-
-![img6](./img/img6.png)
-
-We can either look it up (http://www.ttable.org/), or calculate it with python:
-
-Let's go back to our Gabonese elephants, but let's reduce the sample size to 20, and assume we don't know the standard deviation of the population, but know the sample standard deviation to be ~355 lbs.
-
-Here is the new scenario: suppose we are told that African elephants have weights distributed normally around a mean of 9000 lbs. Pachyderm Adventures has recently measured the weights of 20 African elephants in Gabon and has calculated their average weight at 8637 lbs. They claim that these statistics on the Gabonese elephants are significant. Let's find out!
-
-Because the sample size is smaller, we will use a one sample t-test.
-
-Now, let's use the t-table to find our critical t-value.
-t-critical = -1.729
+Consider the following array associated with the purchases of the 20 Donut Fairy customers given 3 dollar coupons.
 
 
-So, yes, we can very confidently reject our null.
-
-
-# Two sample t-test
 
 ## Two-sample t-tests 
 
@@ -322,117 +302,57 @@ What's the difference?
 
 **Independent tests**: When we compare two different, unrelated samples to each other, we use an independent (or unpaired) two-sample t-test.
 
-The test statistic for an unpaired two-sample t-test is slightly different than the test statistic for the one-sample t-test. 
+## Scenario
 
-Assuming equal variances, the test statistic for a two-sample t-test is given by: 
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give twenty of their customers a 50% off coupon and an additional 20 people a 10 dollars off coupon.  After a month The Donut Fairy had gathered the following data regarding the purchase ammounts corresponding to the two coupons. 
 
-$$ t = \frac{\bar{x_1} - \bar{x_2}}{\sqrt{s^2 \left( \frac{1}{n_1} + \frac{1}{n_2} \right)}}$$
+```
+# ad1 - 50% off coupon
+ad_1=[22, 16, 26, 29, 14, 10, 23, 20, 17, 19, 27, 22, 15, 21, 24, 9, 29, 22, 19, 16]
 
-where $s^2$ is the pooled sample variance, 
-
-$$ s^2 = \frac{\sum_{i=1}^{n_1} \left(x_i - \bar{x_1}\right)^2 + \sum_{j=1}^{n_2} \left(x_j - \bar{x_2}\right)^2 }{n_1 + n_2 - 2} $$
-
-Here, $n_1$ is the sample size of sample 1 and $n_2$ is the sample size of sample 2. 
-
-An independent two-sample t-test for samples of size $n_1$ and $n_2$ has $(n_1 + n_2 - 2)$ degrees of freedom. 
-
-Now let's say we want to compare our Gabonese elephants to a sample of elephants from Kenya. 
-
-## Example 1
-Next, let's finish working through our coffee shop example...  
-
-A coffee shop relocates from Manhattan to Brooklyn and wants to make sure that all lattes are consistent before and after their move. They buy a new machine and hire a new barista. In Manhattan, lattes are made with 4 oz of espresso. A random sample of 25 lattes made in their new store in Brooklyn shows a mean of 4.6 oz and standard deviation of 0.22 oz. Are their lattes different now that they've relocated to Brooklyn? Use a significance level of $\alpha = 0.01$. 
-
-State null and alternative hypothesis
-
-What kind of test? 
-
-Run the test_
-
-
-Can we reject the null hypothesis? 
-
-
-
-## Example 2
-
-I'm buying jeans from store A and store B. I know nothing about their inventory other than prices. 
-
-``` python
-store1 = [20,30,30,50,75,25,30,30,40,80]
-store2 = [60,30,70,90,60,40,70,40]
+#ad2 - 10 dollars off coupon
+ad_2=[12, 14, 11, 22, 13, 17, 15, 20, 15, 13, 15, 14, 12, 14, 15, 16, 17, 14, 21, 10]
 ```
 
-Should I go just to one store for a less expensive pair of jeans? I'm pretty apprehensive about my decision, so $\alpha = 0.1$. It's okay to assume the samples have equal variances.
+The Donut Fairy is now wondering how sure they can be that the difference between the average sales were a result of difference in coupon types rather than chance occurrence.
 
-**State the null and alternative hypotheses**
 
-**What kind of test should we run? Why?** 
+<img src="./img/coupon1.png" width="300"> <img src="./img/coupon2.png" width="300"> 
 
-**Perform the test.**
+# Steps 
 
-**Make decision.**
+1. Set up null and alternative hypotheses
 
-> We fail to reject the null hypothesis at a significance level of $\alpha = 0.1$. We do not have evidence to support that jean prices are different in store A and store B. 
 
-## Example 3 
-
-Next, let's finish working through the restaurant delivery times problem. 
-
-You measure the delivery times of ten different restaurants in two different neighborhoods. You want to know if restaurants in the different neighborhoods have the same delivery times. It's okay to assume both samples have equal variances. Set your significance threshold to 0.05. 
-
-``` python
-delivery_times_A = [28.4, 23.3, 30.4, 28.1, 29.4, 30.6, 27.8, 30.9, 27.0, 32.8]
-delivery_times_B = [26.4, 26.3, 27.4, 30.4, 25.1, 28.4, 23.3, 24.7, 31.8, 24.3]
+```python
+# Null: Customers with ad1 and ad2 spent the same amount
+# Alternative: Customers with ad1 and ad2 spent different amounts
 ```
 
-State null and alternative hypothesis. What type of test should we perform? 
-
-Run the test and make a decision
-
-# Level Up: More practice problems!
-
-A rental car company claims the mean time to rent a car on their website is 60 seconds with a standard deviation of 30 seconds. A random sample of 36 customers attempted to rent a car on the website. The mean time to rent was 75 seconds. Is this enough evidence to contradict the company's claim at a significance level of $\alpha = 0.05$? 
-
-Null hypothesis:
-
-Alternative hypothesis:
+2. Specify the appropriate statistical test
 
 
-Reject?:
 
-Consider the gain in weight (in grams) of 19 female rats between 28 and 84 days after birth. 
-
-Twelve rats were fed on a high protein diet and seven rats were fed on a low protein diet.
-
-``` python
-high_protein = [134, 146, 104, 119, 124, 161, 107, 83, 113, 129, 97, 123]
-low_protein = [70, 118, 101, 85, 107, 132, 94]
+```python
+# Two sample independent, two tail t-test
 ```
 
-Is there any difference in the weight gain of rats fed on high protein diet vs low protein diet? It's OK to assume equal sample variances. 
+3. Choose a significance level (alpha)
 
-Null and alternative hypotheses? 
 
-> null: 
+```python
+.05
+```
 
-> alternative: 
+4. Determine the critical value of test statistic
+5. Calculate the observed value of the test statistic and the p-value.
 
-What kind of test should we perform and why? 
+6. Make a decision (reject or fail to reject) regarding the Null Hypothesis by comparing the observed value of the test-statistic with critical value.
 
-> Test:
 
-We fail to reject the null hypothesis at a significance level of $\alpha = 0.05$. 
-
-**What if we wanted to test if the rats who ate a high protein diet gained more weight than those who ate a low-protein diet?**
-
-Null:
-
-alternative:
-
-Kind of test? 
-
-Critical test statistic value? 
+```python
+# Yes, we can reject the null hypothesis. 
+```
 
 Can we reject?
 
