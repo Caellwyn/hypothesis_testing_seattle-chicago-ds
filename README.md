@@ -13,6 +13,8 @@
 ```python
 from src.student_caller import three_random_students, one_random_student
 from src.student_list import student_first_names
+import numpy as np
+
 ```
 
 # Let's begin with code, work through a computational version of hypothesis testing
@@ -21,7 +23,7 @@ Let's work with the normal distribution, since it's so useful. Suppose we are to
 
 
 ```python
-import numpy as np
+
 np.random.seed(42)
 # Let's simulate a sample, using numpy's random.normal function:
 ```
@@ -148,9 +150,16 @@ If we're testing whether Peeps cause dementia, then the null hypothesis will say
 
 With a classmate Slack out the null and alternative hypotheses for The Donut Fairy example in your own words.
 
+### Step 2: Specify the type of test 
+
 ### How do we know whether we need to use a z-test or a t-test? 
 
 <img src="img/z_or_t_test.png" width="500">
+
+
+```python
+# What type of test should we use
+```
 
 ## Step 3: Choosing a significance level
 
@@ -170,9 +179,16 @@ Note:  We can chance our alpha value based on how important it is to be accurate
 
 For our donut example, we have to find the zscore associated with an $\alpha$ of .05
 
-# Step 5: Calculating the observed value and our p-value
+To do so, we can use stats.norm.ppf(), or a z-table.
 
-The basic idea of a p-value is the probability the you would obtain this value in your sample, or larger, if the null hypothesis is true of the population. So in our case z-score greater than ~1.645.
+
+```python
+# code here
+```
+
+# Step 5: Calculating the observed test value and our p-value
+
+The basic idea of a p-value is the probability the you would obtain this value in your sample, or larger, if the null hypothesis is true of the population. 
 
 <img src="./img/one_tailed.png" width=800  class="center">
 
@@ -190,7 +206,7 @@ $z = \large\dfrac{{\bar{x}} - \mu_{0}}{\dfrac{\sigma}{\sqrt{n}}}$
 
 
 ```python
-# Now calculate p-value
+# Now calculate p-value using stat.norm.ppf()
 ```
 
 # Step 6: Making A Decision!
@@ -273,19 +289,16 @@ The Donut Fairy is a new gourmet donut shop. They want to increase sales at thei
 
 ```python
 #2
-
 ```
 
 
 ```python
 #3
-
 ```
 
 
 ```python
 # 4 Determine the t-critical value
-
 ```
 
 
@@ -366,6 +379,14 @@ The Donut Fairy is now wondering how sure they can be that the difference betwee
 
 
 <img src="./img/coupon1.png" width="300"> <img src="./img/coupon2.png" width="300"> 
+
+# Round Robin
+
+
+
+```python
+one_random_student(student_first_names)
+```
 
 # Steps 
 
