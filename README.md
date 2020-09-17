@@ -65,11 +65,6 @@ ax.hist(sample_means, bins=20);
 
 ```
 
-
-```python
-# Let's make sure this intuition aligns with the z-score
-```
-
 Now let's calculate the z-score analytically.
 Remember the formula for z-score:  
 
@@ -92,7 +87,7 @@ stats.norm.cdf(z_score)
 
 ## Scenario
 
-The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give forty of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 12 dollars a visit, with a standard deviation of 3.5 dollars. They find that the 40 customers they gave a coupon spend on average 17 dollars with a standard deviation of 4. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give forty of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 13.5 dollars a visit, with a standard deviation of 3.5 dollars. They find that the 40 customers they gave a coupon spend on average 17 dollars with a standard deviation of 4. They would like to know whether this **increased** expenditure is a result of offering the coupon rather than chance occurrence.
 
 
 # 1: Establish the basic framework and assumptions for hypothesis testing
@@ -158,7 +153,7 @@ With a classmate Slack out the null and alternative hypotheses for The Donut Fai
 
 
 ```python
-# What type of test should we use
+# What type of test should we use?
 ```
 
 ## Step 3: Choosing a significance level
@@ -206,7 +201,7 @@ $z = \large\dfrac{{\bar{x}} - \mu_{0}}{\dfrac{\sigma}{\sqrt{n}}}$
 
 
 ```python
-# Now calculate p-value using stat.norm.ppf()
+# Now calculate p-value using  stats.norm.cdf()
 ```
 
 # Step 6: Making A Decision!
@@ -264,7 +259,7 @@ When we do not know the population standard deviation or we have a small sample 
 Let's reimagine the Donut Fairy scenario above.  Now, instead of 40 people, the Donut Fairy owner only gives out $10 coupons to 20 people.
 
 
-The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give **20** of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 12 dollars a visit, with a standard deviation of 3.5 dollars. They find that the **20** customers they gave a coupon spend on average 17 dollars. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give **20** of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 13.5 dollars a visit, with a standard deviation of 3.5 dollars. They find that the **20** customers they gave a coupon spend on average 17 dollars with a standard deviation of 4. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
 
 
 # Steps 
@@ -298,7 +293,7 @@ The Donut Fairy is a new gourmet donut shop. They want to increase sales at thei
 
 
 ```python
-# 4 Determine the t-critical value
+# 4 Determine the t-critical value using stats.t.ppf()
 ```
 
 
@@ -334,18 +329,13 @@ coupon_purchase_amount = [11, 17, 15, 19, 15, 17, 17, 10, 18, 13, 11, 12, 16, 18
 
 
 ```python
-# Pass array into stats.ttest() along with the known population mean
-```
-
-
-```python
-stats.ttest_1samp(coupon_purchase_amount, 12)
+# Pass array into stats.ttest_1samp() along with the known population mean
 ```
 
 
 ```python
 # check
-test_stat = (np.mean(coupon_purchase_amount) - 12)/(np.std(coupon_purchase_amount, ddof=1)/np.sqrt(len(coupon_purchase_amount)))
+test_stat = (np.mean(coupon_purchase_amount) - 13.5)/(np.std(coupon_purchase_amount, ddof=1)/np.sqrt(len(coupon_purchase_amount)))
 test_stat
 ```
 
@@ -365,7 +355,7 @@ What's the difference?
 
 ## Scenario
 
-The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give twenty of their customers a 50% off coupon and an additional 20 people a 10 dollars off coupon.  After a month The Donut Fairy had gathered the following data regarding the purchase ammounts corresponding to the two coupons. 
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give twenty of their customers a 50% off coupon and an additional 20 people a 10 dollars off coupon.  After a month The Donut Fairy had gathered the following data regarding the purchase amounts corresponding to the two coupons. 
 
 ```
 # ad1 - 50% off coupon
@@ -434,8 +424,6 @@ result
 ```python
 # Your code here
 ```
-
-Can we reject?
 
 # Summary 
 
