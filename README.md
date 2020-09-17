@@ -125,6 +125,8 @@ If we're testing whether Peeps cause dementia, then the null hypothesis will say
 
 With a classmate Slack out the null and alternative hypotheses for The Donut Fairy example in your own words.
 
+### Step 2: Specify the type of test 
+
 ### How do we know whether we need to use a z-test or a t-test? 
 
 <img src="img/z_or_t_test.png" width="500">
@@ -147,6 +149,8 @@ Note:  We can chance our alpha value based on how important it is to be accurate
 
 For our donut example, we have to find the zscore associated with an $\alpha$ of .05
 
+To do so, we can use stats.norm.ppf(), or a z-table.
+
 
 ```python
 from scipy import stats
@@ -154,9 +158,9 @@ z_critical = stats.norm.ppf(.95)
 z_critical
 ```
 
-# Step 5: Calculating the observed value and our p-value
+# Step 5: Calculating the observed test value and our p-value
 
-The basic idea of a p-value is the probability the you would obtain this value in your sample, or larger, if the null hypothesis is true of the population. So in our case z-score greater than ~1.645.
+The basic idea of a p-value is the probability the you would obtain this value in your sample, or larger, if the null hypothesis is true of the population. 
 
 <img src="./img/one_tailed.png" width=800  class="center">
 
@@ -318,6 +322,9 @@ The Donut Fairy is now wondering how sure they can be that the difference betwee
 
 
 <img src="./img/coupon1.png" width="300"> <img src="./img/coupon2.png" width="300"> 
+
+# Round Robin
+
 
 # Steps 
 
