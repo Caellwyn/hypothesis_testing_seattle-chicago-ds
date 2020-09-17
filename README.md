@@ -67,7 +67,7 @@ z_score
 
 ## Scenario
 
-The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give forty of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 12 dollars a visit, with a standard deviation of 3.5 dollars. They find that the 40 customers they gave a coupon spend on average 17 dollars with a standard deviation of 4. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give forty of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 13.5 dollars a visit, with a standard deviation of 3.5 dollars. They find that the 40 customers they gave a coupon spend on average 17 dollars with a standard deviation of 4. They would like to know whether this **increased** expenditure is a result of offering the coupon rather than chance occurrence.
 
 
 # 1: Establish the basic framework and assumptions for hypothesis testing
@@ -237,7 +237,7 @@ When we do not know the population standard deviation or we have a small sample 
 Let's reimagine the Donut Fairy scenario above.  Now, instead of 40 people, the Donut Fairy owner only gives out $10 coupons to 20 people.
 
 
-The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give **20** of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 12 dollars a visit, with a standard deviation of 3.5 dollars. They find that the **20** customers they gave a coupon spend on average 17 dollars. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give **20** of their customers a 3 dollar off coupon. On average, with no coupon, a Donut Fairy customer spends 13.5 dollars a visit, with a standard deviation of 3.5 dollars. They find that the **20** customers they gave a coupon spend on average 17 dollars with a standard deviation of 4. They would like to know whether this increased expenditure is a result of offering the coupon rather than chance occurrence.
 
 
 # Steps 
@@ -293,6 +293,11 @@ Most often, you will have access to the values of the sample.  If you have acces
 Consider the following array associated with the purchases of the 20 Donut Fairy customers given 3 dollar coupons.
 
 
+```python
+stats.ttest_1samp(coupon_purchase_amount, 13.5)
+```
+
+
 
 ## Two-sample t-tests 
 
@@ -308,7 +313,7 @@ What's the difference?
 
 ## Scenario
 
-The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give twenty of their customers a 50% off coupon and an additional 20 people a 10 dollars off coupon.  After a month The Donut Fairy had gathered the following data regarding the purchase ammounts corresponding to the two coupons. 
+The Donut Fairy is a new gourmet donut shop. They want to increase sales at their store so they decide to give out some coupons.  They give twenty of their customers a 50% off coupon and an additional 20 people a 10 dollars off coupon.  After a month The Donut Fairy had gathered the following data regarding the purchase amounts corresponding to the two coupons. 
 
 ```
 # ad1 - 50% off coupon
@@ -360,8 +365,6 @@ The Donut Fairy is now wondering how sure they can be that the difference betwee
 ```python
 # Yes, we can reject the null hypothesis. 
 ```
-
-Can we reject?
 
 # Summary 
 
